@@ -5,13 +5,14 @@
 SIM ?= icarus
 TOPLEVEL_LANG ?= verilog
 SRC_DIR = $(PWD)/../src
-PROJECT_SOURCES = project.v
+PROJECT_SOURCES = project.v vga_sync_generator.v draw_alien3.v draw_medium_alien.v draw_shooter.v draw_small_alien.v alien3_rom.v medium_alien_rom.v shooter_rom.v small_alien_rom.v barrier_rom.v draw_barrier.v heart_rom.v draw_heart.v trophy_rom.v draw_trophy.v segment_rom.v draw_score.v
 
 ifneq ($(GATES),yes)
 
 # RTL simulation:
 SIM_BUILD				= sim_build/rtl
 VERILOG_SOURCES += $(addprefix $(SRC_DIR)/,$(PROJECT_SOURCES))
+COMPILE_ARGS 		+= -I$(SRC_DIR)
 
 else
 
@@ -29,9 +30,6 @@ VERILOG_SOURCES += $(PDK_ROOT)/sky130A/libs.ref/sky130_fd_sc_hd/verilog/sky130_f
 VERILOG_SOURCES += $(PWD)/gate_level_netlist.v
 
 endif
-
-# Allow sharing configuration between design and testbench via `include`:
-COMPILE_ARGS 		+= -I$(SRC_DIR)
 
 # Include the testbench sources:
 VERILOG_SOURCES += $(PWD)/tb.v
